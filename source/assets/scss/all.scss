@@ -1,0 +1,10 @@
+$primaryColor: red;
+
+body {
+  background-color: $primaryColor;
+}
+
+
+/*----------  vendors  ----------*/
+@import "../../../node_modules/bootstrap/scss/bootstrap";
+/*----------  /vendors  ----------*/

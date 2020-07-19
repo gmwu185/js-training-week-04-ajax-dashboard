@@ -1,0 +1,14 @@
+# sys
+.DS_Store
+*.DS_Store
+
+# NPM & Node
+package-lock.json
+node_modules/
+
+# 專案特定資料夾
+inbox/
+.vscode/
+.tmp/
+output/
+.publish
