@@ -85,8 +85,10 @@ gulp.task('babel', function() {
     .src('./source/assets/js/**/*.js')
     .pipe($.sourcemaps.init())
     .pipe($.order([
-      'components/*.js',
-    ]))
+      'sets/*.js'
+      // ,
+      // 'components/*.js'
+    ])) // ! 注意 .order 裡面的陣列結尾不能有 ,
     .pipe($.concat('all.js'))
     .pipe($.babel({
       presets: ['@babel/env']

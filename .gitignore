@@ -12,3 +12,6 @@ inbox/
 .tmp/
 output/
 .publish
+
+# 不加入專案中特定檔
+source/assets/js/sets/uuid.js
