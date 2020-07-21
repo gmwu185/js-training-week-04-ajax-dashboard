@@ -25,18 +25,6 @@ new Vue({
       //   is_enabled: 1,
       //   imageUrl: 'https://images.unsplash.com/photo-1592107761705-30a1bbc641e7?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=934&q=80',
       // },
-      // {
-      //   id: 1196934917910,
-      //   unit: '台',
-      //   category: '主機',
-      //   title: 'PS5 Wifi',
-      //   origin_price: 29999,
-      //   description: '次世代超強規格',
-      //   content: '我也想要換一台 PS5 Wifi',
-      //   price: 9487,
-      //   is_enabled: 0,
-      //   imageUrl: 'https://images.unsplash.com/photo-1592107761705-30a1bbc641e7?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=934&q=80',
-      // },
     ],
     pagination: {},
     tempProduct: {},
@@ -50,7 +38,16 @@ new Vue({
           const expired = response.data.expired;
           document.cookie = `token=${token}; expires=${new Date(expired * 1000)}; path=/`;
           console.log('signin() -> .then() response', response);
-          alert(JSON.parse(response.request.responseText).message);
+          var jsonParseSigninMessage = JSON.parse(response.request.responseText).message;
+          alert(jsonParseSigninMessage);
+          if ( jsonParseSigninMessage == "登入成功" ) {
+            var confirmDashboardIndex = confirm('登入成功，是否前往後台首頁產品列頁');
+            if (confirmDashboardIndex) {
+              window.location = "product.html";
+            } else {
+              return ''
+            }
+          }
         })
         .catch((error) => {
           // console.dir(error);
@@ -67,22 +64,24 @@ new Vue({
       console.log('signout() -> 完成登出與清除 token 為空字串');
       alert('完成登出');
     },
-    getData() {
+    getData( catchPageNum=1 ) {
       // 取得 token 的 cookies（注意取得的時間點）
       // 詳情請見：https://developer.mozilla.org/zh-CN/docs/Web/API/Document/cookie
       this.token = document.cookie.replace(/(?:(?:^|.*;\s*)token\s*\=\s*([^;]*).*$)|^.*$/, "$1");
+      
       if (this.token == '') {
         console.log('取得資料 getData() 無法執行，token 為空字串');
       } else {
-        // // API
-        const api = `${this.apiPath}${this.uuid}/admin/ec/products`;
+        console.log('getData -> catchPageNum', catchPageNum);
+        // API Path
+        const api = `${this.apiPath}${this.uuid}/admin/ec/products?page=${ catchPageNum }`;
         // console.log('getData() -> api', api);
-  
+
         // 將 Token 加入到 Headers 內
         axios.defaults.headers.common.Authorization = `Bearer ${this.token}`;
         // console.log('getData() ->  this.token', this.token);
   
-        // // 請自行完成 Ajax
+        // Ajax
         axios.get(api).then((response) => {
           console.log('axios.get(api) response', response);
           this.products = response.data.data;
@@ -149,6 +148,7 @@ new Vue({
     this.token = document.cookie.replace(/(?:(?:^|.*;\s*)token\s*\=\s*([^;]*).*$)|^.*$/, "$1");
     // 將 Token 加入到 Headers 內 - 二種寫法二選一
     // axios.defaults.headers.common['Authorization'] = `Bearer ${this.token}`;
+
     axios.defaults.headers.common.Authorization = `Bearer ${this.token}`;
     /*=====  End of 預設執行直接向 cookie 取得 token  ======*/
 
