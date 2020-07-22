@@ -114,8 +114,12 @@ new Vue({
           $('#productModal').modal('show');
           break;
         case 'edit':
-          this.tempProduct = Object.assign({}, item);
-          $('#productModal').modal('show');
+          const url= `${this.apiPath}${this.uuid}/admin/ec/product/${item.id}`;
+          axios.get(url)
+            .then(res => {
+              this.tempProduct = res.data.data;
+              $('#productModal').modal('show');
+            })
           break;
         case 'delete':
           $('#delProductModal').modal('show');
