@@ -28,6 +28,7 @@ new Vue({
     ],
     pagination: {},
     tempProduct: {},
+    loadingBtn: '',
   },
   methods: {
     signin() {
@@ -116,11 +117,14 @@ new Vue({
           $('#productModal').modal('show');
           break;
         case 'edit':
+          this.loadingBtn = item.id; // 取得單筆資料 id 指給 loadingBtn
           const url= `${this.apiPath}${this.uuid}/admin/ec/product/${item.id}`;
           axios.get(url)
             .then(res => {
+              console.log('openModal()-edit-axios.get(url) res', res);
               this.tempProduct = res.data.data;
               $('#productModal').modal('show');
+              this.loadingBtn = ''; // 將取得的單筆資料 ie 在 ajax 後清除
             })
           break;
         case 'delete':
