@@ -14,7 +14,7 @@ Vue.component('modal-content', {
             <div class="col-sm-4">
               <div class="form-group">
                 <label for="imageUrl">輸入圖片網址</label>
-                <input id="imageUrl" v-model="tempProduct.imageUrl" type="text" class="form-control"
+                <input id="imageUrl" v-model="tempProduct.imageUrl[0]" type="text" class="form-control"
                   placeholder="請輸入圖片連結">
               </div>
               <img class="img-fluid" :src="tempProduct.imageUrl" alt>
@@ -78,7 +78,7 @@ Vue.component('modal-content', {
           <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">
             取消
           </button>
-          <button type="button" class="btn btn-primary" @click="updateProduct()">
+          <button type="button" class="btn btn-primary" @click="updateProduct">
             確認
           </button>
         </div>
@@ -90,13 +90,19 @@ Vue.component('modal-content', {
       // tempProduct: {},
     };
   },
-  props: ['tempProduct'],
-  methos: {
+  props: [
+    'tempProduct', 
+    'api-path', 
+    'uuid'
+  ],
+  methods: {
     updateProduct() {
-      console.log('updateProduct()');
+      let apiUrl = `${this.apiPath}${this.uuid}/admin/ec/product/${this.tempProduct.id}`;
+      axios.patch(apiUrl, this.tempProduct)
+      .then(res => {
+          console.log('updateProduct() -> res', res);
+          this.$emit('updata')
+        })
     },
-    // updateProduct: function () {
-    //   console.log('updateProduct()');
-    // }
   },
 });

@@ -27,7 +27,7 @@ new Vue({
       // },
     ],
     pagination: {},
-    tempProduct: {},
+    tempProduct: { imageUrl: [] },
     loadingBtn: '',
   },
   methods: {
@@ -85,12 +85,17 @@ new Vue({
         // console.log('getData() ->  this.token', this.token);
   
         // Ajax
-        axios.get(api).then((response) => {
-          console.log('axios.get(api) response', response);
-          this.products = response.data.data;
-          console.log('this.products', this.products);
-          this.pagination = response.data.meta.pagination;
-        })
+        axios.get(api)
+          .then((response) => {
+            console.log('axios.get(api) response', response);
+            this.products = response.data.data;
+            console.log('this.products', this.products);
+            this.pagination = response.data.meta.pagination;
+            if (this.tempProduct.id) {
+              this.tempProduct = { imageUrl: [] };
+              $('#productModal').modal('hide');
+            }
+          })
       }
     },
     updateProduct() {
@@ -107,7 +112,7 @@ new Vue({
         this.tempProduct.id = id;
         this.products.push(this.tempProduct);
       }
-      this.tempProduct = {};
+      this.tempProduct = { imageUrl: [] };
       $('#productModal').modal('hide');
     },
     openModal(isNew, item) {

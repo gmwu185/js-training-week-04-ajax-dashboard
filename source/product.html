@@ -44,11 +44,8 @@
         <tbody>
           <tr v-for="(item) in products" :key="item.id">
             <td>
-              <img 
-                class="img-fluid" 
-                :src="item.imageUrl" 
-                alt=""
-              >
+              <img class="img-fluid" alt="" 
+              :src="item.imageUrl">
             </td>
             <td>{{ item.category }}</td>
             <td>{{ item.title }}</td>
@@ -83,7 +80,11 @@
       <!-- Modal -->
       <div id="productModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
         aria-hidden="true">
-        <modal-content :temp-product="tempProduct"></modal-content>
+        <modal-content 
+          :temp-product="tempProduct"
+          :api-path="apiPath"
+          :uuid="uuid"
+          @updata="getData"></modal-content>
       </div>
       <div id="delProductModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
         aria-hidden="true">
