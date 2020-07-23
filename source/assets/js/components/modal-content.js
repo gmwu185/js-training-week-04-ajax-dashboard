@@ -1,5 +1,4 @@
-Vue.component('modal', {
-  
+Vue.component('modal-content', {
   template: `<div class="modal-dialog modal-xl" role="document"> 
       <div class="modal-content border-0">
         <div class="modal-header bg-dark text-white">

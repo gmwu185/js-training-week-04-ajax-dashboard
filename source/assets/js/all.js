@@ -43,10 +43,12 @@ new Vue({
           if ( jsonParseSigninMessage == "登入成功" ) {
             var confirmDashboardIndex = confirm('登入成功，是否前往後台首頁產品列頁');
             if (confirmDashboardIndex) {
-              window.location = "product.html";
+              // window.location = "product.html";  // 直接導到指定頁面
+              window.open('product.html', '後台首頁產品列頁'); // 已新分頁開啟頁面
             } else {
               return ''
             }
+            this.user.password = ''; // 確任項目點按後清空密碼輸入框
           }
         })
         .catch((error) => {
