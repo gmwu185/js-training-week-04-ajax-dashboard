@@ -1,6 +1,7 @@
 # 成品頁面
 - [登入頁面](https://gmwu185.github.io/js-training-week-04-ajax-dashboard/login.html)
 - [產品頁面](https://gmwu185.github.io/js-training-week-04-ajax-dashboard/product.html)
+- [前台頁面 (另外 pepos GitHub Pages link)](https://gmwu185.github.io/js-training-week-02-jsajax/)
 
 
 
