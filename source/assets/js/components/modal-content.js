@@ -66,8 +66,10 @@ Vue.component('modal-content', {
               </div>
               <div class="form-group">
                 <div class="form-check">
-                  <input id="is_enabled" v-model="tempProduct.is_enabled" class="form-check-input" type="checkbox"
-                    :true-value="1" :false-value="0">
+                  <input id="is_enabled"class="form-check-input" type="checkbox"
+                  v-model="tempProduct.enabled" 
+                  :true-value="true" 
+                  :false-value="false">
                   <label class="form-check-label" for="is_enabled">是否啟用</label>
                 </div>
               </div>
@@ -78,7 +80,11 @@ Vue.component('modal-content', {
           <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">
             取消
           </button>
-          <button type="button" class="btn btn-primary" @click="updateProduct">
+          <button type="button" class="btn btn-primary" 
+          :disabled="componentLoadingBtn === tempProduct.id"
+          @click="updateProduct">
+            <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true" 
+            v-if="componentLoadingBtn === tempProduct.id"></span>
             確認
           </button>
         </div>
@@ -87,22 +93,53 @@ Vue.component('modal-content', {
   ,
   data() {
     return {
-      // tempProduct: {},
+      // tempProduct: {
+      //   // id: 1586934917210,
+      //   // unit: '台',
+      //   // category: '掌上主機',
+      //   // title: 'Switch',
+      //   // origin_price: 20000,
+      //   // price: 9980,
+      //   // description: '想玩就玩',
+      //   // content: '動森太好玩惹',
+      //   // enabled: 1,
+      //   // imageUrl: 'https://images.unsplash.com/photo-1592107761705-30a1bbc641e7?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=934&q=80',
+      // },
+      componentLoadingBtn: '',  // 由內元件操作按鈕 loading 動效
     };
   },
   props: [
-    'tempProduct', 
+    'isNew',
     'api-path', 
-    'uuid'
+    'uuid',
+    'tempProduct',
   ],
   methods: {
     updateProduct() {
-      let apiUrl = `${this.apiPath}${this.uuid}/admin/ec/product/${this.tempProduct.id}`;
-      axios.patch(apiUrl, this.tempProduct)
-      .then(res => {
-          console.log('updateProduct() -> res', res);
-          this.$emit('updata')
-        })
+      console.log('modal-content inner component updateProduct() -> this.tempProduct.id', this.tempProduct.id);
+
+      console.log('modal-content inner component updateProduct()  -> this.isNew', this.isNew);
+      
+      // 透過 this.isNew 布林值決定處理的 API 
+      if ( this.isNew === false) {
+        this.componentLoadingBtn = this.tempProduct.id; // 取得內元件資料 id 指給 loadingBtn
+        let apiUrl = `${this.apiPath}${this.uuid}/admin/ec/product/${this.tempProduct.id}`;
+        axios.patch(apiUrl, this.tempProduct)
+          .then(res => {
+            console.log('updateProduct() -> res', res);
+            this.$emit('updata');
+            this.componentLoadingBtn = ''; // 內元件操作按鈕 loading 動效在 ajax 後清除
+          })
+      } else {
+        this.componentLoadingBtn = this.tempProduct.id; // 取得內元件資料 id 指給 loadingBtn  
+        let apiUrl = `${this.apiPath}${this.uuid}/admin/ec/product`;
+        axios.post(apiUrl, this.tempProduct)
+          .then((res) => {
+            console.log('postData() api res', res);
+            this.$emit('updata');
+            this.componentLoadingBtn = ''; // 內元件操作按鈕 loading 
+          })
+      }
     },
   },
 });

@@ -22,12 +22,13 @@ new Vue({
       //   price: 9980,
       //   description: '想玩就玩',
       //   content: '動森太好玩惹',
-      //   is_enabled: 1,
+      //   enabled: 1,
       //   imageUrl: 'https://images.unsplash.com/photo-1592107761705-30a1bbc641e7?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=934&q=80',
       // },
     ],
     pagination: {},
     tempProduct: { imageUrl: [] },
+    isNew: false,
     loadingBtn: '',
   },
   methods: {
@@ -89,7 +90,7 @@ new Vue({
           .then((response) => {
             console.log('axios.get(api) response', response);
             this.products = response.data.data;
-            console.log('this.products', this.products);
+            // console.log('this.products', this.products);
             this.pagination = response.data.meta.pagination;
             if (this.tempProduct.id) {
               this.tempProduct = { imageUrl: [] };
@@ -98,31 +99,49 @@ new Vue({
           })
       }
     },
-    updateProduct() {
-      if (this.tempProduct.id) {
-        const id = this.tempProduct.id;
-        this.products.forEach((item, i) => {
-          if (item.id === id) {
-            this.products[i] = this.tempProduct;
-          }
-        });
-      } else {
-        // Unix Timestamp
-        const id = new Date().getTime();
-        this.tempProduct.id = id;
-        this.products.push(this.tempProduct);
-      }
-      this.tempProduct = { imageUrl: [] };
-      $('#productModal').modal('hide');
-    },
+    // updateProduct() {
+    //   if (this.tempProduct.id) {
+    //     const id = this.tempProduct.id;
+    //     this.products.forEach((item, i) => {
+    //       if (item.id === id) {
+    //         this.products[i] = this.tempProduct;
+    //       }
+    //     });
+    //   } else {
+    //     // Unix Timestamp
+    //     const id = new Date().getTime();
+    //     this.tempProduct.id = id;
+    //     this.products.push(this.tempProduct);
+    //     console.log('實體 updateProduct() -> this.tempProduct.id',this.tempProduct.id);
+    //   }
+    //   this.tempProduct = { imageUrl: [] };
+    //   $('#productModal').modal('hide');
+    // },
     openModal(isNew, item) {
       switch (isNew) {
         case 'new':
-          this.tempProduct = {};
+          // this.tempProduct = { imageUrl: [], }
+          // 新建資料將原有 tempProduct 資料清空加上時間 id
+          this.tempProduct = {
+            id: '',
+            unit: '',
+            category: '',
+            title: '',
+            origin_price: Number,
+            price: Number,
+            description: '',
+            content: '',
+            enabled: 0,
+            imageUrl: [],
+          };
+          this.tempProduct.id = new Date().getTime();
+          this.isNew = true;
           $('#productModal').modal('show');
           break;
         case 'edit':
           this.loadingBtn = item.id; // 取得單筆資料 id 指給 loadingBtn
+          this.isNew = false;
+          // ajax get data
           const url= `${this.apiPath}${this.uuid}/admin/ec/product/${item.id}`;
           axios.get(url)
             .then(res => {
@@ -145,8 +164,14 @@ new Vue({
         const id = this.tempProduct.id;
         this.products.forEach((item, i) => {
           if (item.id === id) {
-            this.products.splice(i, 1);
-            this.tempProduct = {};
+            // this.products.splice(i, 1);
+            // this.tempProduct = {};
+            var apiUrl = `${this.apiPath}${this.uuid}/admin/ec/product/${id}`;
+            axios.delete(apiUrl)
+              .then( res => {
+                console.log('postData() api res', res) 
+                this.getData();
+              })
           }
         });
       }
@@ -157,15 +182,12 @@ new Vue({
     // 透過全域設定 uuid
     this.uuid = uuid;
 
-    /*=============================================
-    =            預設執行直接向 cookie 取得 token            =
-    =============================================*/
+    /*----------  預設執行直接向 cookie 取得 token  ----------*/
     this.token = document.cookie.replace(/(?:(?:^|.*;\s*)token\s*\=\s*([^;]*).*$)|^.*$/, "$1");
     // 將 Token 加入到 Headers 內 - 二種寫法二選一
     // axios.defaults.headers.common['Authorization'] = `Bearer ${this.token}`;
-
     axios.defaults.headers.common.Authorization = `Bearer ${this.token}`;
-    /*=====  End of 預設執行直接向 cookie 取得 token  ======*/
+    /*----------  /預設執行直接向 cookie 取得 token  ----------*/
 
     this.getData();
   }

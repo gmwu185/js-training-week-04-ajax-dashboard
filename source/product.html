@@ -12,7 +12,8 @@
   <div id="app" class="container mt-3">
     <div class='py-4'>
       <div class="text-right mb-3">
-        <button class="btn btn-primary" @click="openModal('new')">
+        <button class="btn btn-primary" 
+        @click="openModal('new')">
           建立新的產品
         </button>
       </div>
@@ -20,25 +21,13 @@
       <table class="table mt-4">
         <thead>
           <tr>
-            <th width="200">
-              封面圖片
-            </th>
-            <th width="120">
-              分類
-            </th>
+            <th width="200">封面圖片</th>
+            <th width="120">分類</th>
             <th>產品名稱</th>
-            <th width="120">
-              原價
-            </th>
-            <th width="120">
-              售價
-            </th>
-            <th width="100">
-              是否啟用
-            </th>
-            <th width="120">
-              編輯
-            </th>
+            <th width="120">原價</th>
+            <th width="120">售價</th>
+            <th width="100">是否啟用</th>
+            <th width="150">編輯</th>
           </tr>
         </thead>
         <tbody>
@@ -56,16 +45,16 @@
               {{ item.price }}
             </td>
             <td>
-              <span v-if="item.is_enabled" class="text-success">啟用</span>
+              <span v-if="item.enabled" class="text-success">啟用</span>
               <span v-else>未啟用</span>
             </td>
             <td>
               <div class="btn-group">
                 <button class="btn btn-outline-primary btn-sm" 
-                  @click="openModal('edit', item)"
-                  :disabled="loadingBtn === item.id"
-                >
-                  <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true" v-if="loadingBtn === item.id"></span>
+                @click="openModal('edit', item)"
+                :disabled="loadingBtn === item.id">
+                  <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true" 
+                  v-if="loadingBtn === item.id"></span>
                   編輯
                 </button>
                 <button class="btn btn-outline-danger btn-sm" @click="openModal('delete', item)">
@@ -77,15 +66,17 @@
         </tbody>
       </table>
       <pagination :pages="pagination" @update-page-num="getData"></pagination>
-      <!-- Modal -->
       <div id="productModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
         aria-hidden="true">
         <modal-content 
-          :temp-product="tempProduct"
-          :api-path="apiPath"
-          :uuid="uuid"
-          @updata="getData"></modal-content>
+        ref="productModel" 
+        :api-path="apiPath"
+        :uuid="uuid"
+        :temp-product="tempProduct"
+        :is-new="isNew"
+        @updata="getData"></modal-content>
       </div>
+      <!-- /productModal -->
       <div id="delProductModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
         aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -112,7 +103,8 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> 
+      <!-- /delProductModal -->
     </div>
   </div>
 
