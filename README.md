@@ -1,7 +1,7 @@
 # 成品頁面
 - [登入頁面](https://gmwu185.github.io/js-training-week-04-ajax-dashboard/login.html)
 - [產品頁面](https://gmwu185.github.io/js-training-week-04-ajax-dashboard/product.html)
-- [前台頁面 (另外 pepos GitHub Pages link)](https://gmwu185.github.io/js-training-week-02-jsajax/)
+- [前台頁面 (另外的 Repos 裡的 GitHub Pages link)](https://gmwu185.github.io/js-training-week-02-jsajax/)
 
 
 
@@ -26,7 +26,7 @@
 - 登入成功後的轉址到產品列表頁注意事項
 
 ## 其他
-JavaScript 透過 ES6 module (模組化) 對應 export (匯出) 與 import (匯入) 觀念，透過 Gulp 做對應拆分，模組化首要重點就是 JavaScript 的前後順序，JavaScript 全域 -> Vue component (拆分個部元件) -> Vue 實體，實作透過 gulp babel 轉出也沒有問題。
+JavaScript 透過 ES6 module (模組化) 對應 `export` (匯出) 與 `import` (匯入) 觀念，透過 Gulp 做對應拆分，模組化首要重點就是 JavaScript 的前後順序，JavaScript 全域 -> Vue component (拆分個部元件) -> Vue 實體，實作透過 gulp babel 轉出也沒有問題。
 
 
 
