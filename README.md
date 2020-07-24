@@ -30,7 +30,6 @@ JavaScript 透過 ES6 module (模組化) 對應 `export` (匯出) 與 `import` (
 
 
 
-# Node npm & bower 前端工具，執行指令依序輸入
-- `npm install -g bower`
+# Node npm 前端工具，執行指令依序輸入
 - `npm install`
 - `gulp`
