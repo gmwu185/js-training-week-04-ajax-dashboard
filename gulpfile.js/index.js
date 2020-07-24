@@ -86,8 +86,8 @@ gulp.task('babel', function() {
     .pipe($.sourcemaps.init())
     .pipe($.order([
       'sets/*.js'
-      // ,
-      // 'components/*.js'
+      ,
+      'components/*.js'
     ])) // ! 注意 .order 裡面的陣列結尾不能有 ,
     .pipe($.concat('all.js'))
     .pipe($.babel({
@@ -110,6 +110,18 @@ gulp.task('clean', function () {
     .src(['./.tmp', './output'], {read: false, allowEmpty: true})
     .pipe($.clean());
 });
+
+gulp.task("copyFavIcons", function(){
+  return gulp
+    .src(
+      [
+        './source/favicon.ico'
+      ]
+    )
+    .pipe(
+      gulp.dest('./output/')
+    )
+})
 
 gulp.task("imageMin", function(){
   return gulp
@@ -157,7 +169,8 @@ gulp.task('build',
       // 'jade', 
       'sass', 
       'babel', 
-      'imageMin'
+      'imageMin',
+      'copyFavIcons'
     )
   )
 );
@@ -172,7 +185,8 @@ gulp.task('default',
       // 'jade', 
       'sass', 
       'babel', 
-      'imageMin'
+      'imageMin',
+      'copyFavIcons'
     ),
     function(done){
 
